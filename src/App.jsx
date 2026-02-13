@@ -3,6 +3,7 @@ import CustomNavbar from "./components/CustomNavbar"
 import Home from "./pages/Home"
 import Products from "./pages/Products"
 import ProductDetails from "./pages/ProductDetails";
+import AddProduct from "./pages/AddProduct";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/add-product" element={<AddProduct />} />
       </Routes>
     </Router>
   )
