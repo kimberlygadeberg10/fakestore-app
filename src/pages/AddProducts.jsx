@@ -1,8 +1,8 @@
 // React hooks
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // Bootstrap components
-import { Container, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
+import { Container, Form, Alert, Button } from "react-bootstrap";
 
 // Axios for API calls
 import axios from "axios";
@@ -68,7 +68,7 @@ function AddProduct() {
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="productTitle">
                     <Form.Label>Product Title</Form.Label>
-                    <Form.control
+                    <Form.Control
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -79,10 +79,10 @@ function AddProduct() {
 
                 <Form.Group className="mb-3" controlID="productPrice">
                     <Form.Label>Price</Form.Label>
-                    <Form.control
+                    <Form.Control
                     type="number"
                     value={price}
-                    onChange={(e) setPrice(e.target.value)}
+                    onChange={(e) => setPrice(e.target.value)}
                     required
                     placeholder="Enter price"
                     />
@@ -90,7 +90,7 @@ function AddProduct() {
 
                 <Form.Group className="mb-3" controlId="productDescription">
                     <Form.Laberl>Description</Form.Laberl>
-                    <Form.control
+                    <Form.Control
                     as="textarea"
                     rows={3}
                     value={description}
@@ -102,7 +102,7 @@ function AddProduct() {
 
                 <Form.Group className="mb-3" controlID="productCategory">
                     <Form.Label>Category</Form.Label>
-                    <Form.control
+                    <Form.Control
                     type="text"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
