@@ -1,31 +1,22 @@
-// React hooks
 import { useState, useEffect } from "react";
-
-// Router hooks
 import { useParams, useNavigate } from "react-router-dom";
-
-// Bootstrap components
 import { Container, Form, Button, Spinner, Alert } from "react-bootstrap";
-
-// Axios for API requests
 import axios from "axios";
 
 function EditProduct() {
-  const { id } = useParams(); // Get product ID from URL
-  const navigate = useNavigate(); // For redirecting after edit
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  // Form state
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
 
-  // Loading & messages
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
+  const [fetchError, setFetchError] = useState("");
+  const [submitError, setSubmitError] = useState("");
 
-  // Fetch existing product data when page loads
   useEffect(() => {
     axios
       .get(`https://fakestoreapi.com/products/${id}`)
@@ -38,17 +29,16 @@ function EditProduct() {
         setLoading(false);
       })
       .catch(() => {
-        setError("Failed to load product data");
+        setFetchError("Failed to load product data.");
         setLoading(false);
       });
   }, [id]);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setError(""); // reset previous errors
-    setSuccess(""); // reset previous success messages
+    setSubmitError("");
+    setSuccess("");
 
     const updatedProduct = {
       title,
@@ -66,18 +56,18 @@ function EditProduct() {
       console.log("API Response:", response.data);
 
       setSuccess("Product updated successfully!");
-      setError("");
 
-      // Optional: redirect to product details or listing
-      // navigate(`/products/${id}`);
+      // 🔥 Redirect after 1.5 seconds
+      setTimeout(() => {
+        navigate(`/products/${id}`);
+      }, 1500);
+
     } catch (err) {
       console.error(err);
-      setError("Failed to update product. Try again.");
-      setSuccess("");
+      setSubmitError("Failed to update product. Try again.");
     }
   };
 
-  // Show loading spinner
   if (loading) {
     return (
       <Container className="text-center mt-5">
@@ -86,11 +76,10 @@ function EditProduct() {
     );
   }
 
-  // Show fetch error (only for initial load)
-  if (!loading && error && !success) {
+  if (fetchError) {
     return (
       <Container className="mt-5">
-        <Alert variant="danger">{error}</Alert>
+        <Alert variant="danger">{fetchError}</Alert>
       </Container>
     );
   }
@@ -99,9 +88,8 @@ function EditProduct() {
     <Container className="mt-5">
       <h2>Edit Product</h2>
 
-      {/* Show submission messages */}
       {success && <Alert variant="success">{success}</Alert>}
-      {error && <Alert variant="danger">{error}</Alert>}
+      {submitError && <Alert variant="danger">{submitError}</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="productTitle">
