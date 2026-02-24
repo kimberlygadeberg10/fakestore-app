@@ -1,141 +1,86 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Container, Form, Button, Spinner, Alert } from "react-bootstrap";
+// pages/EditProduct.jsx
+
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Container, Form, Button, Alert } from "react-bootstrap";
 
 function EditProduct() {
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-
-  const [loading, setLoading] = useState(true);
-  const [success, setSuccess] = useState("");
-  const [fetchError, setFetchError] = useState("");
-  const [submitError, setSubmitError] = useState("");
+  const [formData, setFormData] = useState({});
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     axios
       .get(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => {
-        const product = res.data;
-        setTitle(product.title);
-        setPrice(product.price);
-        setDescription(product.description);
-        setCategory(product.category);
-        setLoading(false);
-      })
-      .catch(() => {
-        setFetchError("Failed to load product data.");
-        setLoading(false);
-      });
+      .then((res) => setFormData(res.data));
   }, [id]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    setSubmitError("");
-    setSuccess("");
-
-    const updatedProduct = {
-      title,
-      price: parseFloat(price),
-      description,
-      category,
-    };
-
-    try {
-      const response = await axios.put(
-        `https://fakestoreapi.com/products/${id}`,
-        updatedProduct,
-      );
-
-      console.log("API Response:", response.data);
-
-      setSuccess("Product updated successfully!");
-
-      // 🔥 Redirect after 1.5 seconds
-      setTimeout(() => {
-        navigate(`/products/${id}`);
-      }, 1500);
-
-    } catch (err) {
-      console.error(err);
-      setSubmitError("Failed to update product. Try again.");
-    }
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  if (loading) {
-    return (
-      <Container className="text-center mt-5">
-        <Spinner animation="border" />
-      </Container>
-    );
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  if (fetchError) {
-    return (
-      <Container className="mt-5">
-        <Alert variant="danger">{fetchError}</Alert>
-      </Container>
-    );
-  }
+    axios
+      .put(`https://fakestoreapi.com/products/${id}`, formData)
+      .then(() => setSuccess(true));
+  };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-4">
       <h2>Edit Product</h2>
 
-      {success && <Alert variant="success">{success}</Alert>}
-      {submitError && <Alert variant="danger">{submitError}</Alert>}
+      {success && (
+        <Alert variant="success">
+          Product updated successfully! (FakeStoreAPI does not persist data.)
+        </Alert>
+      )}
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="productTitle">
-          <Form.Label>Product Title</Form.Label>
+        <Form.Group className="mb-3">
+          <Form.Label>Title</Form.Label>
           <Form.Control
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
+            name="title"
+            value={formData.title || ""}
+            onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="productPrice">
+        <Form.Group className="mb-3">
           <Form.Label>Price</Form.Label>
           <Form.Control
+            name="price"
             type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
+            value={formData.price || ""}
+            onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="productDescription">
+        <Form.Group className="mb-3">
           <Form.Label>Description</Form.Label>
           <Form.Control
-            as="textarea"
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
+            name="description"
+            value={formData.description || ""}
+            onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="productCategory">
+        <Form.Group className="mb-3">
           <Form.Label>Category</Form.Label>
           <Form.Control
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
+            name="category"
+            value={formData.category || ""}
+            onChange={handleChange}
           />
         </Form.Group>
 
-        <Button type="submit" variant="primary">
-          Update Product
-        </Button>
+        <Button type="submit">Update Product</Button>
       </Form>
     </Container>
   );
