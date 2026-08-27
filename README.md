@@ -1,16 +1,29 @@
-# React + Vite
+# FakeStore App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React e-commerce application built with Vite that allows users to browse products, view product details, add new products, and edit existing product information.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* Browse products from the FakeStore API
+* View individual product details
+* Add new products
+* Edit existing products
+* Responsive navigation and layout
+* Loading and error handling
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* React
+* Vite
+* React Router
+* Axios
+* React Bootstrap
+* Bootstrap
 
-## Expanding the ESLint configuration
+## What I Learned
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project helped me practice building reusable React components, working with API data, creating multiple routes, managing forms, and handling loading and error states.
+
+## Author
+
+Created by Kimberly Gadeberg.
